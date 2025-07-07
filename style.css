@@ -1,0 +1,494 @@
+/* Charity: water Brand Colors & Fonts
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+Fonts:
+- Proxima Nova
+- Avenir
+
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 30px;
+  background: linear-gradient(135deg, #77A8BB 0%, #CBCCD1 50%, #003366 100%);
+  background-size: 400% 400%;
+  animation: waterFlow 8s ease-in-out infinite;
+  color: #333;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 750px;
+  margin: 50px auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(119, 168, 187, 0.2);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 51, 102, 0.1),
+    0 2px 10px rgba(119, 168, 187, 0.1),
+    inset 0 1px 0 rgba(203, 204, 209, 0.2);
+  position: relative; /* Added for absolute positioning of achievement message */
+}
+
+/* Logo styling for the Charity Water logo at the top */
+.logo-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.main-logo {
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+h1 img {
+  height: 50px;
+  margin-right: 15px;
+  display: block;
+}
+
+.game-instructions {
+  font-size: 18px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  background-color: #f5f5f5;
+  padding: 15px 0;
+  border-radius: 8px;
+}
+
+.stats p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.grid-cell {
+  background-color: #e8e8e8;
+  border-radius: 8px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.water-can-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  /* Ensure the wrapper is properly centered */
+}
+
+.water-can {
+  width: 100%;
+  height: 100%;
+  background-image: url('img/water-can.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border-radius: 50%;
+  animation: popUp 0.5s cubic-bezier(0.17, 0.67, 0.34, 2);
+  transform-origin: center; /* Ensure scaling happens from the center */
+}
+
+@keyframes popUp {
+  0% {
+    transform: scale(0.5); /* Start scaling from the center */
+  }
+  100% {
+    transform: scale(1); /* End scaling at full size */
+  }
+}
+
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin: 30px auto 0;
+  transition: background-color 0.2s;
+}
+
+/* End game achievement message styling */
+.achievement {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 3px solid #FFC907; /* Charity water yellow */
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-width: 400px;
+  width: 90%;
+  display: none; /* Hidden by default */
+
+  /* Animation starts small and grows */
+  animation: expandFromCenter 0.6s cubic-bezier(0.17, 0.67, 0.34, 2);
+}
+
+/* Keyframes for the expanding animation */
+@keyframes expandFromCenter {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Water splash effect for winning */
+.water-splash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  z-index: 999; /* Behind the message but above everything else */
+}
+
+.water-droplet {
+  position: absolute;
+  background: radial-gradient(circle at 30% 30%, #CBCCD1 0%, #77A8BB 40%, #003366 100%); /* Silvery glare to dark blue */
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* Multiple droplets with different sizes and positions */
+.droplet-1 {
+  width: 20px;
+  height: 20px;
+  top: 40%;
+  left: 45%;
+  animation: splash1 1.2s ease-out;
+}
+
+.droplet-2 {
+  width: 15px;
+  height: 15px;
+  top: 30%;
+  left: 60%;
+  animation: splash2 1.4s ease-out 0.1s;
+}
+
+.droplet-3 {
+  width: 25px;
+  height: 25px;
+  top: 55%;
+  left: 35%;
+  animation: splash3 1.3s ease-out 0.2s;
+}
+
+.droplet-4 {
+  width: 12px;
+  height: 12px;
+  top: 25%;
+  left: 40%;
+  animation: splash4 1.5s ease-out 0.15s;
+}
+
+.droplet-5 {
+  width: 18px;
+  height: 18px;
+  top: 60%;
+  left: 65%;
+  animation: splash5 1.1s ease-out 0.3s;
+}
+
+.droplet-6 {
+  width: 22px;
+  height: 22px;
+  top: 35%;
+  left: 70%;
+  animation: splash6 1.6s ease-out 0.05s;
+}
+
+/* Individual splash animations for each droplet */
+@keyframes splash1 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1.2) translate(-30px, -40px); opacity: 0.8; }
+  100% { transform: scale(0.8) translate(-60px, -80px); opacity: 0; }
+}
+
+@keyframes splash2 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1) translate(40px, -50px); opacity: 0.7; }
+  100% { transform: scale(0.6) translate(80px, -100px); opacity: 0; }
+}
+
+@keyframes splash3 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1.3) translate(-50px, 30px); opacity: 0.9; }
+  100% { transform: scale(0.7) translate(-100px, 60px); opacity: 0; }
+}
+
+@keyframes splash4 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(0.8) translate(-20px, -60px); opacity: 0.6; }
+  100% { transform: scale(0.4) translate(-40px, -120px); opacity: 0; }
+}
+
+@keyframes splash5 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1.1) translate(35px, 45px); opacity: 0.8; }
+  100% { transform: scale(0.9) translate(70px, 90px); opacity: 0; }
+}
+
+@keyframes splash6 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1.4) translate(55px, -35px); opacity: 0.7; }
+  100% { transform: scale(0.8) translate(110px, -70px); opacity: 0; }
+}
+
+/* Center splash effect */
+.center-splash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(203, 204, 209, 0.8) 0%, rgba(119, 168, 187, 0.6) 30%, rgba(0, 51, 102, 0.4) 70%, transparent 100%);
+  border-radius: 50%;
+  animation: centerSplash 0.8s ease-out;
+}
+
+@keyframes centerSplash {
+  0% { 
+    transform: translate(-50%, -50%) scale(0); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.5); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(3); 
+    opacity: 0; 
+  }
+}
+
+/* Mini splash effect for clicking water cans */
+.mini-water-splash {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 500; /* Above grid but below win message */
+}
+
+.mini-water-droplet {
+  position: absolute;
+  background: radial-gradient(circle at 25% 25%, #CBCCD1 0%, #77A8BB 50%, #003366 100%); /* Silvery glare to dark blue */
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* Smaller droplets for can clicks */
+.mini-droplet-1 {
+  width: 8px;
+  height: 8px;
+  top: 45%;
+  left: 40%;
+  animation: miniSplash1 0.8s ease-out;
+}
+
+.mini-droplet-2 {
+  width: 6px;
+  height: 6px;
+  top: 35%;
+  left: 55%;
+  animation: miniSplash2 0.9s ease-out 0.05s;
+}
+
+.mini-droplet-3 {
+  width: 10px;
+  height: 10px;
+  top: 55%;
+  left: 35%;
+  animation: miniSplash3 0.7s ease-out 0.1s;
+}
+
+.mini-droplet-4 {
+  width: 7px;
+  height: 7px;
+  top: 30%;
+  left: 45%;
+  animation: miniSplash4 0.8s ease-out 0.03s;
+}
+
+/* Mini center splash for can clicks */
+.mini-center-splash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, rgba(203, 204, 209, 0.9) 0%, rgba(119, 168, 187, 0.7) 40%, rgba(0, 51, 102, 0.5) 80%, transparent 100%);
+  border-radius: 50%;
+  animation: miniCenterSplash 0.5s ease-out;
+}
+
+/* Mini splash animations - smaller and faster */
+@keyframes miniSplash1 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1) translate(-15px, -20px); opacity: 0.8; }
+  100% { transform: scale(0.6) translate(-30px, -40px); opacity: 0; }
+}
+
+@keyframes miniSplash2 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(0.8) translate(20px, -25px); opacity: 0.7; }
+  100% { transform: scale(0.4) translate(40px, -50px); opacity: 0; }
+}
+
+@keyframes miniSplash3 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(1.1) translate(-25px, 15px); opacity: 0.9; }
+  100% { transform: scale(0.7) translate(-50px, 30px); opacity: 0; }
+}
+
+@keyframes miniSplash4 {
+  0% { transform: scale(0) translate(0, 0); opacity: 1; }
+  50% { transform: scale(0.9) translate(-10px, -30px); opacity: 0.6; }
+  100% { transform: scale(0.5) translate(-20px, -60px); opacity: 0; }
+}
+
+@keyframes miniCenterSplash {
+  0% { 
+    transform: translate(-50%, -50%) scale(0); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.2); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(2); 
+    opacity: 0; 
+  }
+}
+
+/* Water flow animation for background */
+@keyframes waterFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Subtle water wave overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(119, 168, 187, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(203, 204, 209, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(0, 51, 102, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Water ripple effects in background */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(119, 168, 187, 0.03) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, rgba(203, 204, 209, 0.03) 3px, transparent 3px);
+  background-size: 150px 150px, 200px 200px;
+  animation: rippleMove 20s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes rippleMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-50px, -50px);
+  }
+}
