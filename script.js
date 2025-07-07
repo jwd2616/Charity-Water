@@ -37,27 +37,67 @@ function createGrid() {
 // Ensure the grid is created when the page loads
 createGrid();
 
-// Spawns a new item in a random grid cell
+// Spawns a new item in a random grid cell (water can or broken pipe)
 function spawnWaterCan() {
   if (!gameActive) return; // Stop if the game is not active
   const cells = document.querySelectorAll('.grid-cell');
   
-  // Clear all cells before spawning a new water can
+  // Clear all cells before spawning a new item
   cells.forEach(cell => (cell.innerHTML = ''));
 
-  // Select a random cell from the grid to place the water can
+  // Select a random cell from the grid to place the item
   const randomCell = cells[Math.floor(Math.random() * cells.length)];
 
-  // Use a template literal to create the wrapper and water-can element
-  randomCell.innerHTML = `
-    <div class="water-can-wrapper">
-      <div class="water-can"></div>
-    </div>
-  `;
+  // 70% chance for water can, 30% chance for broken pipe
+  const shouldSpawnBrokenPipe = Math.random() < 0.3;
 
-  // Add click event listener to the newly created water can
-  const waterCan = randomCell.querySelector('.water-can');
-  waterCan.addEventListener('click', collectWaterCan);
+  if (shouldSpawnBrokenPipe) {
+    // Spawn a broken pipe
+    randomCell.innerHTML = `
+      <div class="broken-pipe-wrapper">
+        <div class="broken-pipe"></div>
+      </div>
+    `;
+
+    // Add click event listener to the newly created broken pipe
+    const brokenPipe = randomCell.querySelector('.broken-pipe');
+    brokenPipe.addEventListener('click', clickBrokenPipe);
+  } else {
+    // Spawn a water can (existing logic)
+    randomCell.innerHTML = `
+      <div class="water-can-wrapper">
+        <div class="water-can"></div>
+      </div>
+    `;
+
+    // Add click event listener to the newly created water can
+    const waterCan = randomCell.querySelector('.water-can');
+    waterCan.addEventListener('click', collectWaterCan);
+  }
+}
+
+// Function to handle when a broken pipe is clicked
+function clickBrokenPipe(event) {
+  if (!gameActive) return; // Only allow interaction if game is active
+  
+  // Get the position of the clicked broken pipe
+  const brokenPipeWrapper = event.target.closest('.broken-pipe-wrapper');
+  const gridCell = brokenPipeWrapper.closest('.grid-cell');
+  
+  // Decrement the score by 1 (but don't go below 0)
+  currentCans = Math.max(0, currentCans - 1);
+  
+  // Update the score display on the page
+  document.getElementById('current-cans').textContent = currentCans;
+  
+  // Remove the clicked broken pipe from the grid
+  brokenPipeWrapper.remove();
+  
+  // Optional: Add a visual effect to show it was a bad click
+  gridCell.style.backgroundColor = '#ffcccc';
+  setTimeout(() => {
+    gridCell.style.backgroundColor = '';
+  }, 300);
 }
 
 // Function to handle when a water can is clicked
