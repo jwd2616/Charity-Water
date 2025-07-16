@@ -13,7 +13,20 @@
       <img src="img/cw_logo_horizontal.png" alt="Charity Water Logo" class="main-logo">
     </div>
     <h1>Water Quest</h1>
-    <p class="game-instructions">Collect 20 items to complete the game!</p>
+    <p class="game-instructions">Normal Mode: Collect 20 items in 30 seconds!</p>
+    
+    <!-- Difficulty selection buttons -->
+    <div class="difficulty-selector">
+      <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+      <button class="difficulty-btn active" data-difficulty="normal">Normal</button>
+      <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+    </div>
+    
+    <!-- Sound control toggle -->
+    <div class="sound-controls">
+      <button id="sound-toggle" class="sound-btn">🔊 Sound On</button>
+    </div>
+    
     <div class="stats">
       <p>Cans Collected: <span id="current-cans">0</span></p>
       <p>Time Left: <span id="timer">30</span>s</p>
@@ -22,6 +35,32 @@
     <div class="game-grid"></div>
     <button id="start-game">Start Game</button>
   </div>
+  
+  <!-- Footer with charity: water links -->
+  <footer class="charity-footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="img/cw_logo.png" alt="charity: water" class="footer-logo-img">
+      </div>
+      <div class="footer-text">
+        <p class="footer-description">
+          Help bring clean water to people in need around the world.
+        </p>
+        <div class="footer-links">
+          <a href="https://www.charitywater.org" target="_blank" class="footer-link">
+            Learn More About Our Mission
+          </a>
+          <a href="https://www.charitywater.org/donate" target="_blank" class="footer-link donate-link">
+            Donate Now
+          </a>
+        </div>
+        <p class="footer-note">
+          Every dollar donated goes directly to clean water projects.
+        </p>
+      </div>
+    </div>
+  </footer>
+  
   <script src="script.js"></script>
 </body>
 </html>
